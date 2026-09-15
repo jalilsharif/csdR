@@ -12,6 +12,11 @@ analysis by the CSD algorithm presented by Voigt et al. 2017.
 The main function of the
 package is \code{\link{run_csd}} which compares gene expression for two
 conditions and returns values for C, S and D for each gene pair.
+Optional improvements include correlation method choice
+(\code{spearman}/\code{pearson}/\code{bicor}), confounder
+residualization, correlation shrinkage, approximate FDR columns,
+\code{\link{annotate_csd}} / \code{\link{select_top_csd}} for labeling
+gene pairs, and \code{\link{csd_permutation_fdr}} for empirical FDR.
 Also, the underlying
 function \code{\link{run_cor_bootstrap}} is provided
 for doing correlation analysis

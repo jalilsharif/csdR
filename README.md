@@ -26,6 +26,23 @@ Please see the [package vignette](https://almaaslab.github.io/csdR/articles/csdR
 
 Pettersen, J.P., Almaas, E. csdR, an R package for differential co-expression analysis. BMC Bioinformatics 23, 79 (2022). https://doi.org/10.1186/s12859-022-04605-1
 
+### Robustness options (v1.14+)
+
+```r
+# robust correlation + shrinkage + covariate residualization
+res <- run_csd(
+  x_1 = case, x_2 = control,
+  method = "bicor", shrink = TRUE,
+  covariates_1 = case_meta[, c("batch", "purity"), drop = FALSE],
+  covariates_2 = control_meta[, "batch", drop = FALSE],
+  n_it = 100
+)
+# gene-pair labels (S = condition-specific, D = opposite sign)
+top <- select_top_csd(res, n_pairs = 100, condition_names = c("case", "control"))
+# optional empirical FDR (expensive)
+res <- csd_permutation_fdr(case, control, observed = res, n_perm = 50)
+```
+
 
 ## Issues and feedback
 Please use the repository's [issue tracker](https://github.com/AlmaasLab/csdR/issues) if you cannot make the package work or if you have suggestions for improvements.
