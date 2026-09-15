@@ -1,3 +1,16 @@
+# csdR 1.14.0
+
+Statistical robustness extensions to the CSD pipeline:
+
+* `run_csd()` / `run_cor_bootstrap()` gain `method` (`spearman`, `pearson`, `bicor`),
+  optional Schäfer–Strimmer correlation `shrink`, and optional confounder
+  residualization via `covariates_1` / `covariates_2` (or `covariates`).
+* Approximate normal-tail BH FDR columns (`cFDR`, `sFDR`, `dFDR`) are attached to
+  CSD results; `csd_permutation_fdr()` provides empirical condition-label
+  permutation FDR when affordable.
+* New helpers: `residualize_expression()`, `shrink_correlation()`,
+  `annotate_csd()`, and `select_top_csd()` for labeling S/D gene pairs by name.
+
 # csdR 1.5.1
 
 Fixed segfault issue which did occur in `partial_argsort()` when the `n_elements`

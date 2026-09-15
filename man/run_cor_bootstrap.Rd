@@ -2,14 +2,17 @@
 % Please edit documentation in R/find_rho_and_var.R
 \name{run_cor_bootstrap}
 \alias{run_cor_bootstrap}
-\title{Run bootstrapping of Spearman correlations within a dataset}
+\title{Run bootstrapping of correlations within a dataset}
 \usage{
 run_cor_bootstrap(
   x,
   n_it = 20L,
   nThreads = 1L,
   verbose = TRUE,
-  iterations_gap = 1L
+  iterations_gap = 1L,
+  method = c("spearman", "pearson", "bicor"),
+  shrink = FALSE,
+  covariates = NULL
 )
 }
 \arguments{
@@ -25,18 +28,30 @@ Genes are in columns, samples are in rows.}
 \item{iterations_gap}{If output is verbose - Number of iterations between
 each status message
 (Default=1 - Displayed only if \code{verbose=TRUE})}
+
+\item{method}{Correlation method: \code{"spearman"} (default),
+\code{"pearson"}, or \code{"bicor"} (biweight midcorrelation).}
+
+\item{shrink}{Logical or numeric. If \code{TRUE}, apply Schäfer–Strimmer
+shrinkage of the mean correlation matrix toward the identity using the
+bootstrap variances. If a number in \eqn{[0,1]}, that intensity is used.
+If \code{FALSE} (default), no shrinkage is applied.}
+
+\item{covariates}{Optional sample-level covariates to residualize out
+before correlation (see \code{\link{residualize_expression}}).}
 }
 \value{
-A list with two fields \describe{
-\item{rho}{Numeric matrix constaining the bootstrapped
-mean of the Spearman correlation between each column}
-\item{var}{Numeric matrix constaining the bootstrapped
-variance of the Spearman correlation between each column}
+A list with fields \describe{
+\item{rho}{Numeric matrix containing the bootstrapped
+ mean of the correlation between each column}
+\item{var}{Numeric matrix containing the bootstrapped
+ variance of the correlation between each column}
+\item{shrink_intensity}{The shrinkage intensity applied (0 if none)}
 }
 }
 \description{
 This function provides the more low-level functionality
-of bootstrapping the Spearman correlations of the columns within a dataset.
+of bootstrapping correlations of the columns within a dataset.
 Only use this function if you want
 a low-level interface, else \code{\link{run_csd}}
 provides a more streamlined approach if you want to do a CSD analysis.

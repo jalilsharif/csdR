@@ -1,7 +1,7 @@
 Package: csdR
 Title: Differential gene co-expression
-Version: 1.13.4
-Date: 07-11-2024
+Version: 1.14.0
+Date: 15-09-2026
 Authors@R: 
     person(given = "Jakob Peder",
    family = "Pettersen",
@@ -12,13 +12,17 @@ Authors@R:
 Description: This package contains functionality to run differential gene co-expression across two different conditions.
     The algorithm is inspired by Voigt et al. 2017 and finds Conserved, Specific and Differentiated genes (hence the name CSD). 
     This package include efficient and variance calculation by bootstrapping and Welford's algorithm.
+    Extensions include robust correlation options (Pearson, biweight midcorrelation),
+    confounder residualization, Schäfer-Strimmer correlation shrinkage,
+    approximate BH FDR on C/S/D scores, and optional condition-label permutation FDR.
 Depends: R (>= 4.1.0)
 Imports: 
     WGCNA,
     glue,
     RhpcBLASctl,
     matrixStats,
-    Rcpp
+    Rcpp,
+    stats
 License: GPL-3
 Encoding: UTF-8
 NeedsCompilation: yes

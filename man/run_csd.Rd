@@ -10,7 +10,11 @@ run_csd(
   n_it = 20L,
   nThreads = 1L,
   verbose = TRUE,
-  iterations_gap = 1L
+  iterations_gap = 1L,
+  method = c("spearman", "pearson", "bicor"),
+  shrink = FALSE,
+  covariates_1 = NULL,
+  covariates_2 = NULL
 )
 }
 \arguments{
@@ -32,6 +36,16 @@ the second condition.}
 \item{iterations_gap}{If output is verbose - Number of iterations between
 each status message
 (Default=1 - Displayed only if \code{verbose=TRUE})}
+
+\item{method}{Correlation method: \code{"spearman"} (default),
+\code{"pearson"}, or \code{"bicor"}.}
+
+\item{shrink}{Logical or numeric shrinkage intensity for the mean
+correlation matrices (see \code{\link{shrink_correlation}}).}
+
+\item{covariates_1, covariates_2}{Optional covariates for residualization
+within each condition (same number of rows as the corresponding
+expression matrix).}
 }
 \value{
 A \code{data.frame} with
@@ -58,12 +72,18 @@ one condition, but not the other.}
 A high value indicates that the co-expression of the two genes have
 a high degree of co-expression in
 both condition, but the sign of co-expression is different.}
+\item{\code{cP},\code{sP},\code{dP}}{Approximate two-sided normal p-values
+treating C/S/D as \eqn{|Z|} scores.}
+\item{\code{cFDR},\code{sFDR},\code{dFDR}}{Benjamini–Hochberg FDR from those
+p-values. Prefer \code{\link{csd_permutation_fdr}} when affordable.}
 }
 }
 \description{
 This function implements the CSD algorithm based on the
-one presented by Voigt et al. 2017. All pairs of genes are
-first compared within each condition by the Spearman correlation
+one presented by Voigt et al. 2017, extended with optional robust
+correlation measures, confounder residualization, and correlation
+shrinkage. All pairs of genes are
+first compared within each condition by the chosen correlation
 and the correlation and its variance are
 estimated by bootstrapping.
 Finally, the results for the two conditions are
@@ -75,6 +95,7 @@ The gene names in \code{x_1} and \code{x_2}
 do not need to be in the same order,
 but must be in the same namespace.
 Only genes present in both datasets will be considered for the analysis.
+Number of samples may differ between conditions.
 The parallelism gained by \code{nThreads} applies to the computations
 within a single iteration. The iterations are run is serial in order
 to reduce the memory footprint.
